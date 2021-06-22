@@ -1,7 +1,0 @@
-metadata:
-  name: apikey-auth
-  namespace: gloo-system
-configs:
-- apiKeyAuth:
-    labelSelector:
-      team: infrastructure
