@@ -1,0 +1,60 @@
+node:
+  cluster: gateway
+  id: docker-compose-node
+  metadata:
+    # this line must match !
+    role: "gloo-system~gateway-proxy"
+static_resources:
+  clusters:
+  - name: rest_xds_cluster
+    connect_timeout: 5.000s
+    load_assignment:
+      cluster_name: xds_cluster
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                #address: a72b19efcaf2341a6a30ab75c9565162-1670f0d2ebfa61c8.elb.us-west-2.amazonaws.com
+                #port_value: 80
+                address: a0da708f995e847c7be0bd1941c0a836-3e67792f4d9f091d.elb.us-west-2.amazonaws.com
+                port_value: 9976
+                #address: host.docker.internal
+                #port_value: 9976
+    type: STRICT_DNS
+  - name: xds_cluster
+    connect_timeout: 5.000s
+    load_assignment:
+      cluster_name: xds_cluster
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                #address: a72b19efcaf2341a6a30ab75c9565162-1670f0d2ebfa61c8.elb.us-west-2.amazonaws.com
+                #port_value: 80
+                address: a0da708f995e847c7be0bd1941c0a836-3e67792f4d9f091d.elb.us-west-2.amazonaws.com
+                port_value: 9977
+                #address: host.docker.internal
+                #port_value: 9977
+    http2_protocol_options: {}
+    type: STRICT_DNS
+    # type: STATIC
+dynamic_resources:
+  ads_config:
+    transport_api_version: V3
+    api_type: GRPC
+    grpc_services:
+    - envoy_grpc: {cluster_name: xds_cluster}
+  cds_config:
+    resource_api_version: V3
+    ads: {}
+  lds_config:
+    resource_api_version: V3
+    ads: {}
+admin:
+  access_log_path: /dev/null
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 19000
