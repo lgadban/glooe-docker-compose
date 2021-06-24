@@ -14,6 +14,10 @@ spec:
     port: 9977
     protocol: TCP
     targetPort: 9977
+  - name: rest-xds
+    port: 9976
+    protocol: TCP
+    targetPort: 9976
   selector:
     gloo: gloo
   sessionAffinity: None

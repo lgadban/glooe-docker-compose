@@ -22,6 +22,32 @@ static_resources:
                 #address: host.docker.internal
                 #port_value: 9976
     type: STRICT_DNS
+    respect_dns_ttl: true
+    transport_socket:
+      name: envoy.transport_sockets.tls
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+        common_tls_context:
+          tls_certificate_sds_secret_configs:
+            - name: server_cert
+              sds_config:
+                resource_api_version: V3
+                api_config_source:
+                  api_type: GRPC
+                  transport_api_version: V3
+                  grpc_services:
+                  - envoy_grpc:
+                      cluster_name: gateway_proxy_sds
+          validation_context_sds_secret_config:
+            name: validation_context
+            sds_config:
+              resource_api_version: V3
+              api_config_source:
+                api_type: GRPC
+                transport_api_version: V3
+                grpc_services:
+                - envoy_grpc:
+                    cluster_name: gateway_proxy_sds
   - name: xds_cluster
     connect_timeout: 5.000s
     load_assignment:
@@ -38,8 +64,49 @@ static_resources:
                 #address: host.docker.internal
                 #port_value: 9977
     http2_protocol_options: {}
+    upstream_connection_options:
+      tcp_keepalive: {}
     type: STRICT_DNS
+    respect_dns_ttl: true
     # type: STATIC
+    transport_socket:
+      name: envoy.transport_sockets.tls
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+        common_tls_context:
+          tls_certificate_sds_secret_configs:
+            - name: server_cert
+              sds_config:
+                resource_api_version: V3
+                api_config_source:
+                  api_type: GRPC
+                  transport_api_version: V3
+                  grpc_services:
+                  - envoy_grpc:
+                      cluster_name: gateway_proxy_sds
+          validation_context_sds_secret_config:
+            name: validation_context
+            sds_config:
+              resource_api_version: V3
+              api_config_source:
+                api_type: GRPC
+                transport_api_version: V3
+                grpc_services:
+                - envoy_grpc:
+                    cluster_name: gateway_proxy_sds
+  - name: gateway_proxy_sds
+    connect_timeout: 0.25s
+    http2_protocol_options: {}
+    type: STRICT_DNS
+    load_assignment:
+      cluster_name: gateway_proxy_sds
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: sds
+                port_value: 8234
 dynamic_resources:
   ads_config:
     transport_api_version: V3

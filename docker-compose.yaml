@@ -3,14 +3,29 @@ services:
   gateway-proxy:
     image: quay.io/solo-io/gloo-ee-envoy-wrapper:1.7.7
     entrypoint: ["envoy"]
-    command: ["-c", "/config/envoy.yaml", "--disable-hot-restart", "-l debug"]
+    #command: ["-c", "/config/envoy.yaml", "--disable-hot-restart", "-l debug"]
+    command: ["-c", "/config/envoy.yaml", "--disable-hot-restart"]
     volumes:
     - ./envoy-config.yaml:/config/envoy.yaml:ro
     ports:
     - "8090:8080"
     - "8443:8443"
     - "19000:19000"
-    restart: always
+    depends_on:
+    - sds
+
+  sds:
+    image: quay.io/solo-io/sds:1.7.6
+    volumes:
+    - ./envoy-config.yaml:/config/envoy.yaml:ro
+    ports:
+    - "8234:8234"
+    volumes:
+    - ./gloo-mtls-certs:/etc/envoy/ssl:ro
+    environment:
+    - SDS_CLIENT=docker-compose-node
+    - GLOO_MTLS_SDS_ENABLED=true
+    - SDS_SERVER_ADDRESS=:8234
 
   #extauth:
   #  image: quay.io/solo-io/extauth-ee:1.4.6
