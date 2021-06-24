@@ -60,9 +60,9 @@ services:
   #  ports:
   #  - "6379:6379"
 
-  #petstore: # example application, the swagger petstore
-  #  image: soloio/petstore-example:latest
-  #  ports: 
-  #  - "8090:8080"
-  #  restart: always
+  petstore: # example application, the swagger petstore
+    image: soloio/petstore-example:latest
+    ports: 
+    - "8080:8080"
+    restart: always
 
