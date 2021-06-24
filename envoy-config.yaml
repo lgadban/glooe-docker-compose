@@ -3,7 +3,7 @@ node:
   id: docker-compose-node
   metadata:
     # this line must match !
-    role: "gloo-system~gateway-proxy"
+    role: "gloo-system~vm-proxy"
 static_resources:
   clusters:
   - name: rest_xds_cluster
