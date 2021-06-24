@@ -3,7 +3,7 @@ services:
   gateway-proxy:
     image: quay.io/solo-io/gloo-ee-envoy-wrapper:1.7.7
     entrypoint: ["envoy"]
-    #command: ["-c", "/config/envoy.yaml", "--disable-hot-restart", "-l debug"]
+    # command: ["-c", "/config/envoy.yaml", "--disable-hot-restart", "-l debug"]
     command: ["-c", "/config/envoy.yaml", "--disable-hot-restart"]
     volumes:
     - ./envoy-config.yaml:/config/envoy.yaml:ro
