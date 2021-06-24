@@ -58,7 +58,7 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: gloo-xds-grpc.apps.solo1.gl00.net
+                address: gloo-grpc-xds.apps.solo1.gl00.net
                 port_value: 443
                 #address: a0da708f995e847c7be0bd1941c0a836-3e67792f4d9f091d.elb.us-west-2.amazonaws.com
                 #port_value: 9977
@@ -74,7 +74,7 @@ static_resources:
       name: envoy.transport_sockets.tls
       typed_config:
         "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: gloo-xds-grpc.apps.solo1.gl00.net
+        sni: gloo-grpc-xds.apps.solo1.gl00.net
         common_tls_context:
           tls_certificate_sds_secret_configs:
             - name: server_cert
