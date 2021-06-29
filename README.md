@@ -31,3 +31,8 @@ docker-compose up -d
 oc apply -f gloo-configs/vm-gateway.yaml
 oc apply -f gloo-configs/vm-petstore.yaml
 ```
+
+## Access service via proxy
+```
+curl localhost:8090/api/pets -H "host: vm.test.com"
+```

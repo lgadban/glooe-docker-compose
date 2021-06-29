@@ -8,7 +8,7 @@ metadata:
 spec:
   virtualHost:
     domains:
-    - 'test'
+    - 'vm.test.com'
     routes:
     - matchers:
       - prefix: /
